@@ -1,6 +1,6 @@
 # Type Theory
 
-Material for the Autumn 26/27 DRP on Type Theory @ Imperial
+Material for the Autumn 26/27 DRP on Type Theory @ Imperial (work in progress!)
 
 Contact: ajb421 [at] ic [dot] ac [dot] uk
 
