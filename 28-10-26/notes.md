@@ -36,6 +36,10 @@ The second route kept going:
 
 1. **Every term comes with a type, and you can't ask about membership.** In set theory, "$x \in y$" is a proposition you can ask about any two things. In type theory, "$a : A$" is not a proposition. It's a *judgement*: part of how the expression was built, which you (or the computer) check by looking at the text. You can't form the proposition "$a : A$" and then negate it, so there's no "$x \notin x$" to begin with.
 
+   As an example, in set theory you can happily define a function on sets by cases:
+   $$f(x) = \begin{cases} 0 & \text{if } x \in \mathbb{N} \\ 1 & \text{otherwise.} \end{cases}$$
+   In type theory there's nothing like this. A function $f : A \to B$ already says what its inputs are, and there's no way to take an input and ask which type it belongs to. If $x : \mathbb{N}$ then that's simply how $x$ was given to us. "$x : \mathbb{Z}$" isn't false, it just isn't a statement we can write down. To treat $x$ as an integer we have to convert it explicitly (see *coercions* below).
+
 2. **Comprehension is always relative to a type.** The closest you can get to "the collection of $x$ with property $\phi$" is a predicate $P : A \to \text{Prop}$ on some type $A$ you already have. So Russell's set would have to be something like $R : A \to \text{Prop}$. But then to "ask whether $R \in R$" you'd need to write $R(R)$, which needs $R : A$. It isn't. $R$ has type $A \to \text{Prop}$, so the expression doesn't typecheck. The paradox just isn't a well-formed sentence.
 
 3. **Types of types are stratified.** We do want a "type of all types", called a *universe*. If we allowed $\text{Type} : \text{Type}$, a version of the paradox comes back (Girard's paradox). Instead there's a hierarchy
@@ -47,6 +51,15 @@ So ZFC avoids the paradox by restricting *which* sets exist, while type theory a
 ## Basic Differences
 
 * **Typing is static.** As above, $a : A$ is a property of the expression and its context, not a fact about the universe you can question. In set theory, $2 \in 3$ is a meaningful (and, with the usual encoding, true) statement. In type theory, the analogous question isn't one you can ask.
+
+  If you've programmed before, this is the difference between a dynamically typed language like Python (where you can check `isinstance(x, int)` while the program runs) and a statically typed one, where the compiler checks every type before anything runs. Type theory is firmly the second kind. In Lean:
+
+  ```lean
+  #check (2 + 2 = 5 : Prop)   -- fine: a perfectly good (false) proposition
+  #check ("hello" + 2 = 5)    -- error: rejected before we even get to ask if it's true
+  ```
+
+  Note the difference: $2 + 2 = 5$ is a well-formed statement that happens to be false. $\texttt{"hello"} + 2 = 5$ isn't a statement at all. Ill-typed expressions are not false, they're meaningless, and Russell's $R \in R$ ends up in this second category.
 * **Equality behaves differently.** Voevodsky's *univalence axiom* says, roughly, that isomorphic structures are equal. More precisely, for types $A$ and $B$, equality $A = B$ is equivalent to having an equivalence $A \simeq B$. This is how mathematicians already talk ("the group of order 2"), and univalence makes it literally true.
 * **Universal properties pin things down exactly.** In set theory, an object defined by a universal property (a product, a quotient, a free group, ...) is only unique up to isomorphism, and you have to keep carrying the isomorphisms around. In HoTT, with univalence, "unique up to unique isomorphism" becomes plain uniqueness: the solution is unique as an element of the relevant type.
 
@@ -92,6 +105,8 @@ Read logically, a term of $\sum_{x : A} P(x)$ is a witness $a$ together with a p
 The same type also plays the role of the set-builder $\{ x : A \mid P(x) \}$: its elements are elements of $A$ bundled with evidence that they satisfy $P$. So "the even numbers" becomes $\sum_{n : \mathbb{N}} \text{isEven}(n)$.
 
 (A small caveat for later: a $\Sigma$-type remembers *which* witness you gave, which is more information than "there exists" usually carries. HoTT and Lean deal with this using propositional truncation. We'll come back to it.)
+
+For more on $\Pi$- and $\Sigma$-types, with plenty of examples you can run, see the *Dependent Type Theory* and *Quantifiers and Equality* chapters of *Theorem Proving in Lean 4*: https://lean-lang.org/theorem_proving_in_lean4/
 
 ## The Law of Excluded Middle
 
@@ -139,8 +154,19 @@ $$P \subseteq Q \quad :\equiv \quad \forall x : A,\ P(x) \to Q(x).$$
 
 If we want the subset as a type in its own right, we take $\sum_{x : A} P(x)$ from before.
 
+## Why Proof Assistants?
+
+You'll notice Lean keeps coming up. That's not a coincidence: most modern proof assistants (Lean, Agda, Rocq) are built directly on dependent type theory, and the reason is propositions as types.
+
+If a proof is just a term, and a theorem is just its type, then *checking a proof* is the same thing as *type checking a term*. Type checking is a purely mechanical process, exactly the kind of thing computers are good at. So the computer doesn't need to understand your argument. It only needs to check that the term you've built really has the type you claimed. The part that does this (the *kernel*) is small enough that people can trust it.
+
+This is also part of why Voevodsky got involved. He'd found errors in his own published work and wanted a foundation where proofs could be checked by machine. The two areas have grown up together ever since. Big results like the Four Colour Theorem (in Rocq) and the Liquid Tensor Experiment (in Lean) have been fully formalised, and Lean's mathlib now covers a large chunk of undergraduate maths and beyond.
+
+If you want to try it, the Natural Number Game linked in the README is the easiest place to start.
+
 ## Questions to Think About
 
-* Is the impossibility of asking "$a : A$?" a feature or a limitation? Can you think of a mathematical argument that seems to need it?
-* Altenkirch argues that type theory is closer to how mathematicians actually think than ZFC is. Do you agree?
-* Before univalence, what would "isomorphic structures are equal" even mean, and why might it be inconsistent with set theory?
+* Why is $R \in R$ not a valid statement in type theory? Try to explain it in a sentence.
+* What does a proof of $\forall n : \mathbb{N},\ n + 0 = n$ look like as a function? What goes in, and what comes out?
+* In set theory, is $1 \in 3$? Why does type theory not let us ask this?
+* Which do you find more natural, ZFC or type theory? Why?
