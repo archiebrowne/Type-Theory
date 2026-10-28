@@ -7,6 +7,7 @@ Contact: ajb421 [at] ic [dot] ac [dot] uk
 ## Reading Material:
 
 * Russell's Paradox, Stanford Encyclopedia of Philosophy: https://plato.stanford.edu/entries/russell-paradox/, the paradox that started motivated a divergence from naive set theory. 
+* HoTTEST Summer School 2022 Lecture Series: https://www.youtube.com/watch?v=HvYYCHMeM-8&list=PLtFwBiUY0QlxpWDLOOX1ATrHiznbWMhYq&pp=0gcJCVgDOCosWNin
 * Thorsten Altenkirch, Should Type Theory Replace Set Theory as the Foundation of Mathematics?: https://arxiv.org/abs/2111.06368, short and opinionated case for type theory over ZFC.
 * The aboutlogic podcast: https://www.youtube.com/@aboutlogic, very approachable an interesting podcast about logic, with a lot about type theory.
 * Andrej Bauer, Five Stages of Accepting Constructive Mathematics: https://math.andrej.com/2016/10/10/five-stages-of-accepting-constructive-mathematics/, maths without the law of excluded middle.
