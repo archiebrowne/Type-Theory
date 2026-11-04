@@ -5,7 +5,7 @@
 * Peter Selinger, *Lecture Notes on the Lambda Calculus*, Sections 6.1–6.5: https://arxiv.org/pdf/0804.3434
 * Philip Wadler, *Propositions as Types* (optional, for the history): https://homepages.inf.ed.ac.uk/wadler/papers/propositions-as-types/propositions-as-types.pdf
 
-Last week we said, without much justification, that "propositions are types and proofs are terms". This week we make that precise for a small but honest fragment: the **simply-typed $\lambda$-calculus** on one side, and **propositional intuitionistic logic** on the other. The plan is:
+Last week we talked about how "propositions are types and proofs are terms". This week we discuss the **simply-typed $\lambda$-calculus** and **propositional intuitionistic logic** and show the this correspondence. The plan is:
 
 1. Set up the simply-typed $\lambda$-calculus and its typing rules.
 2. Say what intuitionistic logic is and why it's the right logic here.
